@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles'
 
 import { TextField, Button, AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemText, Divider, Box } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
+import EditIcon from '@material-ui/icons/Edit'
 
 import { Chart } from "react-google-charts"
 
@@ -29,10 +30,6 @@ const styles = theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 		flex: 1
-	},
-	chart: {
-		marginLeft: 'auto',
-		marginRight: 'auto'
 	}
 })
 
@@ -762,7 +759,7 @@ class App extends Component {
 		if(this.state.genrePopularityShow) {
 			if(!this.state.topGenre)
 				this.getGenrePopularity(10)
-			return <div>
+			return <Box>
 						<h3>Popularité des genres musicaux</h3>
 						<Chart
 							id="topGenre"
@@ -783,7 +780,7 @@ class App extends Component {
 									position: 'none'
 								}
 							}} />
-					</div>
+					</Box>
 		}
 	}
 
@@ -791,7 +788,7 @@ class App extends Component {
 		if(this.state.languagePopularityShow) {
 			if(!this.state.topLanguage)
 				this.getLanguagePopularity()
-			return <div>
+			return <Box>
 						<h3>Popularité des langues</h3>
 						<Chart
 							id="topLanguage"
@@ -812,7 +809,7 @@ class App extends Component {
 									position: 'none'
 								}
 							}} />
-					</div>
+					</Box>
 		}
 	}
 
@@ -820,7 +817,7 @@ class App extends Component {
 		if(this.state.countryPopularityShow) {
 			if(!this.state.topCountry)
 				this.getCountryPopularity()
-			return <div>
+			return <Box>
 						<h3>Popularité des pays</h3>
 						<Chart
 							id="topCountry"
@@ -857,7 +854,7 @@ class App extends Component {
 									position: 'none'
 								}
 							}} />
-					</div>
+					</Box>
 		}
 	}
 
@@ -890,7 +887,7 @@ class App extends Component {
 	searchArtistDisplay() {
 		if(this.state.artistShow) {
 			if(!this.state.artistData){
-				return <div>
+				return <Box>
 							<h3>Chercher un artiste</h3>
 							<Autocomplete
 								freeSolo
@@ -910,11 +907,18 @@ class App extends Component {
 									/>
 								) }
 							/>
-						</div>
+						</Box>
 			}
 			else
-				return <div>
+				return <Box>
 							<h3>{this.state.artistData.name}</h3>
+							<Button 
+								variant="outlined"
+								size="small"
+								startIcon={<EditIcon />}
+								onClick={ e => this.clearProps("artist") }>
+								Chercher un autre artiste
+							</Button>
 							<Chart
 								chartType="ColumnChart"
 								data={this.state.artistSongsPerYear}
@@ -952,13 +956,7 @@ class App extends Component {
 										position: 'none'
 									}
 								}} />
-							<Button 
-								variant="outlined" 
-								style={{ marginTop: 50 }}
-								onClick={ e => this.clearProps("artist") }>
-								Chercher un autre artiste
-							</Button>
-						</div>
+						</Box>
 		}
 	}
 
@@ -966,7 +964,7 @@ class App extends Component {
 		if(this.state.compareArtistsShow) {
 			const data = this.state.compareArtistsData
 			if(!data) {
-				return <div>
+				return <Box>
 							<h3>Comparer deux artistes</h3>
 							<Autocomplete
 								freeSolo
@@ -1005,11 +1003,22 @@ class App extends Component {
 								) }
 							/>
 							<Button variant="outlined" onClick={ e => this.handleCompareButtonClick(e, "artist") }>Comparer</Button>
-						</div>
+						</Box>
 			} 
 			else {
-				return <div>
+				return <Box>
 							<h3>{this.state.artist1Data.name} vs {this.state.artist2Data.name}</h3>
+							<Button 
+								variant="outlined"
+								size="small"
+								startIcon={<EditIcon />}
+								style={{ marginBottom: "50px" }}
+								onClick={ e => {
+									this.clearProps("artist1")
+									this.clearProps("artist2")
+								} }>
+								Faire une autre comparaison
+							</Button>
 							<Chart
 									id="compareArtistsChart"
 									chartType="BarChart"
@@ -1017,16 +1026,8 @@ class App extends Component {
 									options={{
 										title: 'Comparaison entre deux artistes'
 									}} />
-							<Button 
-								variant="outlined" 
-								style={{ marginTop: 50 }}
-								onClick={ e => {
-									this.clearProps("artist1")
-									this.clearProps("artist2")
-								} }>
-								Faire une autre comparaison
-							</Button>
-						</div>
+							
+						</Box>
 				
 			}
 		}
@@ -1145,9 +1146,7 @@ class App extends Component {
 						</Box>
 					</Box>
 				</Box>
-				
 
-				
 			</div>
 		)
 	}
